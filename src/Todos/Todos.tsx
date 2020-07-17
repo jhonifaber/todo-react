@@ -2,11 +2,17 @@ import React, { useState } from 'react'
 import { Todo } from '../Todo/Todo'
 import { nanoid } from 'nanoid'
 
+export interface ITodo {
+    id: string
+    selected: boolean
+    name: string
+}
+
 export function Todos() {
-    const [todos, setTodos] = useState([])
+    const [todos, setTodos] = useState<ITodo[]>([])
     const [text, setText] = useState('')
 
-    function handleChange(event) {
+    function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
         setText(event.target.value)
     }
 
@@ -20,7 +26,7 @@ export function Todos() {
         cleanInputField()
     }
 
-    const handleFormSubmit = (event) => {
+    const handleFormSubmit = (event: React.FormEvent) => {
         event.preventDefault()
         addItem()
     }
@@ -29,12 +35,12 @@ export function Todos() {
         setText('')
     }
 
-    const handleRemove = (id) => {
+    const handleRemove = (id: string) => {
         const newList = todos.filter((todo) => todo.id !== id)
         setTodos(newList)
     }
 
-    const handleSelected = (id) => {
+    const handleSelected = (id: string) => {
         const todosCopy = [...todos]
         const todoIndex = todosCopy.findIndex((todo) => todo.id === id)
         todosCopy[todoIndex].selected = !todosCopy[todoIndex].selected
@@ -44,7 +50,7 @@ export function Todos() {
     return (
         <>
             <form onSubmit={handleFormSubmit}>
-                <input type="text" value={text} onChange={handleChange}/>
+                <input type="text" value={text} onChange={handleChange} />
             </form>
             <button onClick={addItem}> Add</button>
             <ol>
