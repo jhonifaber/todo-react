@@ -12,11 +12,11 @@ export function Todos() {
     const [todos, setTodos] = useState<ITodo[]>([])
     const [text, setText] = useState('')
 
-    function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setText(event.target.value)
     }
 
-    function addItem() {
+    const addItem = () => {
         const newTodo = {
             id: nanoid(),
             selected: false,
@@ -31,7 +31,7 @@ export function Todos() {
         addItem()
     }
 
-    function cleanInputField() {
+    const cleanInputField = () => {
         setText('')
     }
 
