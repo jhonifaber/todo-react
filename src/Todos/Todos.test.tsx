@@ -13,4 +13,12 @@ describe('TODOS', () => {
         //expect(screen.getByText(/Searches for JavaScript/)).toBeNull() //esto no funciona porque o devuelve un valor
         // o devuelve error. Solucion: queryByText
     })
+
+    test('checks default item is loaded asynchronously', async () => {
+        render(<Todos />)
+        expect(screen.queryByText('default item')).toBeNull()
+        screen.debug()
+        expect(await screen.findByText('default item')).toBeInTheDocument()
+        screen.debug()
+    })
 })

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Todo } from '../Todo/Todo'
 import { nanoid } from 'nanoid'
 
@@ -8,9 +8,31 @@ export interface ITodo {
     name: string
 }
 
+function getDefaultItemsFromFakeAPI(): Promise<ITodo> {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            const defaultItem = {
+                id: 'asdfgtrd454',
+                selected: false,
+                name: 'default item',
+            }
+            resolve(defaultItem)
+        }, 2000)
+    })
+}
+
 export function Todos() {
     const [todos, setTodos] = useState<ITodo[]>([])
     const [text, setText] = useState('')
+
+    const loadDefaultItems = async () => {
+        const defaultItem = await getDefaultItemsFromFakeAPI()
+        setTodos((list) => [...list, defaultItem])
+    }
+
+    useEffect(() => {
+        loadDefaultItems()
+    }, [])
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setText(event.target.value)
