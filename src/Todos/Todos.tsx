@@ -40,7 +40,7 @@ export function Todos() {
 
     const addItem = () => {
         const newTodo = {
-            id: nanoid(),
+            id: '1',
             selected: false,
             name: text,
         }
