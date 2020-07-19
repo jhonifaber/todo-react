@@ -24,18 +24,25 @@ function getDefaultItemsFromFakeAPI(): Promise<ITodo> {
 export function Todos() {
     const [todos, setTodos] = useState<ITodo[]>([])
     const [text, setText] = useState('')
+    const [isLoading, setIsLoading] = useState(false)
 
     const loadDefaultItems = async () => {
         const defaultItem = await getDefaultItemsFromFakeAPI()
         setTodos((list) => [...list, defaultItem])
+        setIsLoading(false)
     }
 
     useEffect(() => {
+        setIsLoading(true)
         loadDefaultItems()
     }, [])
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setText(event.target.value)
+    }
+
+    if (isLoading) {
+        return <p> Loading items </p>
     }
 
     const addItem = () => {
