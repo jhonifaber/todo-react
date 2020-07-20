@@ -30,25 +30,19 @@ describe('TODOS', () => {
     })
 
     test('checks default item is loaded asynchronously', async () => {
-        const { queryByText, findByText, debug } = render(<Todos />)
+        render(<Todos />)
 
-        expect(queryByText('default item')).toBeNull()
-        expect(await findByText('Loading items')).toBeInTheDocument() // por que await aqui?
-        debug()
-        expect(await findByText('default item')).toBeInTheDocument()
-        debug()
+        expect(screen.getByText('Loading items')).toBeInTheDocument()
+        expect(await screen.findByText('default item')).toBeInTheDocument()
     })
 
     test('checks user adds new item to the list', async () => {
-        const component = render(<Todos />)
-        await component.findByText('Loading items')
-        userEvent.type(await component.findByRole('textbox'), 'milk')
-        expect(component.getByRole('textbox')).toHaveAttribute('value', 'milk')
-        userEvent.click(component.getByText('Add'))
-        expect(component.getByRole('textbox')).toHaveAttribute('value', '')
-
-        let todoList = component.getAllByRole('listitem')
-        expect(todoList).toHaveLength(2)
-        component.debug()
+        render(<Todos />)
+        await userEvent.type(await screen.findByRole('textbox'), 'milk')
+        userEvent.click(screen.getByRole('button', { name: /add/i }))
+        expect(screen.getByRole('textbox')).toHaveValue('')
+        let todoList = screen.getAllByRole('listitem')
+        expect(todoList[1]).toHaveTextContent('milk')
+        // expect(todoList).toHaveLength(2)
     })
 })

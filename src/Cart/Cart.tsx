@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { CartContext } from '../Todos/Todos'
 
 export function Cart(props: any) {
-    // por que no puedo tipar a ITodo[]
+    const todos = useContext(CartContext)
     return (
         <div>
-            Cart: <span>{props.todos.length}</span>
+            Cart: <span>{todos.length}</span>
         </div>
     )
 }

@@ -1,6 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { Todo } from '../Todo/Todo'
 import { nanoid } from 'nanoid'
+import { Navbar } from '../Navbar/Navbar'
+
+export const CartContext = React.createContext([])
+function CartProvider(props: any) {
+    //suele tener un estado interno
+    return (
+        <CartContext.Provider value={props.todos}>
+            {props.children}
+        </CartContext.Provider>
+    )
+}
 
 export interface ITodo {
     id: string
@@ -47,7 +58,7 @@ export function Todos() {
 
     const addItem = () => {
         const newTodo = {
-            id: '1',
+            id: '2345',
             selected: false,
             name: text,
         }
@@ -77,7 +88,8 @@ export function Todos() {
     }
 
     return (
-        <>
+        <CartProvider todos={todos}>
+            <Navbar />
             <form onSubmit={handleFormSubmit}>
                 <input type="text" value={text} onChange={handleChange} />
             </form>
@@ -93,6 +105,6 @@ export function Todos() {
                     </li>
                 ))}
             </ol>
-        </>
+        </CartProvider>
     )
 }
