@@ -2,8 +2,17 @@ import React, { useEffect, useState } from 'react'
 import { Todo } from '../Todo/Todo'
 import { nanoid } from 'nanoid'
 import { Navbar } from '../Navbar/Navbar'
+import store from '../store/store'
+import { useDispatch, useSelector, useStore } from 'react-redux'
+import {
+    addTodo,
+    removeTodo,
+    changeSelectedState,
+    selectTodos,
+} from './todosSlice'
 
 export const CartContext = React.createContext([])
+
 function CartProvider(props: any) {
     //suele tener un estado interno
     return (
@@ -33,13 +42,15 @@ function getDefaultItemsFromFakeAPI(): Promise<ITodo> {
 }
 
 export function Todos() {
-    const [todos, setTodos] = useState<ITodo[]>([])
+    const todos = useSelector(selectTodos)
+    const dispatch = useDispatch()
+
     const [text, setText] = useState('')
     const [isLoading, setIsLoading] = useState(false)
 
     const loadDefaultItems = async () => {
         const defaultItem = await getDefaultItemsFromFakeAPI()
-        setTodos((list) => [...list, defaultItem])
+        dispatch(addTodo(defaultItem))
         setIsLoading(false)
     }
 
@@ -62,7 +73,7 @@ export function Todos() {
             selected: false,
             name: text,
         }
-        setTodos((list) => [...list, newTodo])
+        dispatch(addTodo(newTodo))
         cleanInputField()
     }
 
@@ -76,15 +87,11 @@ export function Todos() {
     }
 
     const handleRemove = (id: string) => {
-        const newList = todos.filter((todo) => todo.id !== id)
-        setTodos(newList)
+        dispatch(removeTodo(id))
     }
 
     const handleSelected = (id: string) => {
-        const todosCopy = [...todos]
-        const todoIndex = todosCopy.findIndex((todo) => todo.id === id)
-        todosCopy[todoIndex].selected = !todosCopy[todoIndex].selected
-        setTodos(todosCopy)
+        dispatch(changeSelectedState(id))
     }
 
     return (
@@ -95,7 +102,7 @@ export function Todos() {
             </form>
             <button onClick={addItem}> Add</button>
             <ol>
-                {todos.map((todo) => (
+                {todos.map((todo: any) => (
                     <li key={todo.id}>
                         <Todo
                             todo={todo}
