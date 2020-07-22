@@ -9,6 +9,7 @@ import {
     removeTodo,
     changeSelectedState,
     selectTodos,
+    fetchTodo,
 } from './todosSlice'
 
 export const CartContext = React.createContext([])
@@ -94,9 +95,14 @@ export function Todos() {
         dispatch(changeSelectedState(id))
     }
 
+    const handleAsyncEvent = async () => {
+        const newVar = await dispatch(fetchTodo())
+    }
+
     return (
         <CartProvider todos={todos}>
             <Navbar />
+            <button onClick={handleAsyncEvent}>async button </button>
             <form onSubmit={handleFormSubmit}>
                 <input type="text" value={text} onChange={handleChange} />
             </form>

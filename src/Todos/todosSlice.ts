@@ -1,9 +1,23 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ITodo } from './Todos'
 
 type TodoState = {
     todosList: ITodo[]
 }
+
+export const fetchTodo = createAsyncThunk('todos/fetchTodo', async () => {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            const defaultItem = {
+                id: 'xcvbnm',
+                selected: false,
+                name: 'async item',
+            }
+            // @ts-ignore
+            resolve(defaultItem)
+        }, 2000)
+    })
+})
 
 export const todoSlice = createSlice({
     name: 'todos',
@@ -12,7 +26,6 @@ export const todoSlice = createSlice({
     } as TodoState,
     reducers: {
         addTodo: (state, action) => {
-            // @ts-ignore
             state.todosList.push(action.payload)
         },
         removeTodo: (state, action: PayloadAction<string>) => {
@@ -30,6 +43,12 @@ export const todoSlice = createSlice({
             )
             todosCopy[todoIndex].selected = !todosCopy[todoIndex].selected
             state.todosList = todosCopy
+        },
+    },
+    extraReducers: {
+        // @ts-ignore
+        [fetchTodo.fulfilled]: (state, action) => {
+            state.todosList.push(action.payload)
         },
     },
 })
