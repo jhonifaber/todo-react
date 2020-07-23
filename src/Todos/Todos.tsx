@@ -3,6 +3,8 @@ import { Todo } from '../Todo/Todo'
 import { nanoid } from 'nanoid'
 import { Navbar } from '../Navbar/Navbar'
 import store from '../store/store'
+import styled from 'styled-components'
+
 import { useDispatch, useSelector, useStore } from 'react-redux'
 import {
     addTodo,
@@ -54,6 +56,14 @@ export function Todos() {
         dispatch(addTodo(defaultItem))
         setIsLoading(false)
     }
+    const Button = styled.button`
+        color: palevioletred;
+        font-size: 12px;
+        margin: 1em;
+        padding: 0.25em 1em;
+        border: 1px solid palevioletred;
+        border-radius: 3px;
+    `
 
     useEffect(() => {
         setIsLoading(true)
@@ -96,7 +106,7 @@ export function Todos() {
     }
 
     const handleAsyncEvent = async () => {
-        const newVar = await dispatch(fetchTodo())
+        await dispatch(fetchTodo())
     }
 
     return (
@@ -106,7 +116,7 @@ export function Todos() {
             <form onSubmit={handleFormSubmit}>
                 <input type="text" value={text} onChange={handleChange} />
             </form>
-            <button onClick={addItem}> Add</button>
+            <Button onClick={addItem}> Add</Button>
             <ol>
                 {todos.map((todo: any) => (
                     <li key={todo.id}>
